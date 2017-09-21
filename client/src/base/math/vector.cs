@@ -9,7 +9,7 @@ namespace BadFaith
 	/**
 		2D int vector.
 	*/
-	struct Vector2I
+	public struct Vector2I
 	{
 		public int X, Y;
 
