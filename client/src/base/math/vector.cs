@@ -19,7 +19,7 @@ namespace BadFaith
 			Y = y;
 		}
 
-#pragma region Operators
+#region Operators
 		/**
 			Negation operator
 		*/
@@ -62,7 +62,7 @@ namespace BadFaith
 		{
 			return lhs.X * rhs.X + lhs.Y * rhs.Y;
 		}
-#pragma endregion
+#endregion
 
 		/**
 		Returns the squared magnitude of this vector.

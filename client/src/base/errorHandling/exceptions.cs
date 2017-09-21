@@ -38,7 +38,7 @@ namespace BadFaith
 		public WorldGenError(string message = kExceptionMessage) : base(message) { }
 	}
 
-#pragma region Warnings
+#region Warnings
 	// Warning exceptions.
 	// these are unusual situations that
 	// won't crash the program, but probably will
@@ -57,5 +57,5 @@ namespace BadFaith
 
 		public GameplayWarning(string message = kExceptionMessage) : base(message) { }
 	}
-#pragma endregion
+#endregion
 }
