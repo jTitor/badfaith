@@ -14,10 +14,7 @@ namespace BadFaith
 			Name = name;
 			Value = value;
 		}
-	}
 
-	public static class Directions
-	{
 		public static Direction North = new Direction("North", 0);
 		public static Direction South = new Direction("South", 2);
 		public static Direction East = new Direction("East", 1);
@@ -31,13 +28,10 @@ namespace BadFaith
 		{
 			return all[(d.Value + 2) % all.Length];
 		}
-	}
 
-	public static class DirectionOppositeExtension
-	{
-		public static Direction Opposite(this Direction d)
+		public Direction Opposite()
 		{
-			return Directions.Opposite(d);
+			return Direction.Opposite(this);
 		}
 	}
 }

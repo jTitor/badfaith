@@ -3,6 +3,7 @@
 	Objects in the game world distinct from terrain that can move.
 */
 using System;
+using System.Collections.Generic;
 
 namespace BadFaith
 {
@@ -18,15 +19,12 @@ namespace BadFaith
 		public int Psyche;
 		public int FieldId;
 
-	}
-
-	class Actors
-	{
 		/**
 		All actors in the game world.
 		Element 0 is the null element.
 		*/
-		protected static Actor[] all = new Actor[1];
+		private static List<Actor> _all = new List<Actor>();
+		public static List<Actor> All { get { return _all; } }
 
 		/**
 		Resets the table of all actors
@@ -34,7 +32,7 @@ namespace BadFaith
 		 */
 		public static void InitActors(int numActors)
 		{
-			all = new Actor[numActors];
+			throw new System.NotImplementedException("Implement null element initialization");
 		}
 
 		/**
@@ -46,7 +44,7 @@ namespace BadFaith
 			Returns True if the actor was moved
 			to the new field, False otherwise.
 		*/
-		public static bool MoveToField(int[] actorIds)
+		public static bool MoveToField(List<int> actorIds)
 		{
 			//TODO: result should really include an ActorId?
 			throw new System.NotImplementedException();
@@ -68,7 +66,7 @@ namespace BadFaith
 			Attempts to enter the gate in each actor's field, if they have one.
 			Returns true if the given actor entered the gate.
 		*/
-		public static bool[] EnterGate(int[] actorIds)
+		public static List<bool> EnterGate(List<int> actorIds)
 		{
 			//TODO: result should really include an ActorId?
 			throw new System.NotImplementedException();
@@ -87,7 +85,7 @@ namespace BadFaith
 			clamped to the field's edge instead.
 			Returns True if the actor was successfully moved any distance from its prior position.
 		*/
-		public static bool[] Move(int[] actorIds, Vector2I[] moveVectors)
+		public static List<bool> Move(List<int> actorIds, List<Vector2I> moveVectors)
 		{
 			throw new System.NotImplementedException();
 			// assert isinstance(direction, Direction)
@@ -134,7 +132,7 @@ namespace BadFaith
 			Removes the given actors
 			from the world.
 		*/
-		public static void DestroyActors(int[] actorIds)
+		public static void DestroyActors(List<int> actorIds)
 		{
 			throw new System.NotImplementedException();
 
