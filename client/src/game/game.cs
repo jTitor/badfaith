@@ -28,7 +28,7 @@ namespace BadFaith
 		private float minUpdatableTimeSeconds = kMinUpdatableTimeSeconds;
 		private Terminal terminal = null;
 
-		void Game(Terminal inTerminal)
+		public Game(Terminal inTerminal)
 		{
 			terminal = inTerminal;
 			// //Prime the data tables!
