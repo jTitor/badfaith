@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using BadFaith.UI.Terminals.Constants;
+using BadFaith.UI.Terminals.Palettes;
 
 namespace BadFaith.UI.Terminals
 {
@@ -169,17 +171,21 @@ namespace BadFaith.UI.Terminals
 		/**
 		Sets the foreground/background to the given palette.
 		*/
-		public void SetColor(PaletteColor backgroundPalette, FormatFlags formatFlags = FormatFlags.Normal)
+		public void SetColor(PaletteColor backgroundPalette, int formatFlags)
 		{
 			//assert isinstance(backgroundPalette, Palette);
-			int flags = FormatFlags.toImplementationFlags(formatFlags);
+			int flags = FormatFlags.ToImplementationFlags(formatFlags);
 			cursesWindow.bkgd(' ', backgroundPalette.cursesCode | flags);
 		}
+		public void SetColor(PaletteColor backgroundPalette)
+		{ SetColor(backgroundPalette, FormatFlags.Normal); }
 
-		private void doPrintString(string toPrint, Vector2I positionYX, int cursesFlags = curses.A_NORMAL)
+		private void doPrintString(string toPrint, Vector2I positionYX, int cursesFlags)
 		{
 			cursesWindow.addnstr(positionYX.X, positionYX.Y, toPrint, Extents.X - 1, cursesFlags);
 		}
+		private void doPrintString(string toPrint, Vector2I positionYX)
+		{ doPrintString(toPrint, positionYX, curses.A_NORMAL); }
 
 		/**
 		Prints the given string, clipping it if
@@ -199,10 +205,12 @@ namespace BadFaith.UI.Terminals
 		Prints the given string with the
 		given FormatFlags.
 		*/
-		public void PrintFormattedString(string toPrint, Vector2I positionYX, int flags = FormatFlags.Normal)
+		public void PrintFormattedString(string toPrint, Vector2I positionYX, int flags)
 		{
-			doPrintString(toPrint, positionYX, FormatFlags.toImplementationFlags(flags));
+			doPrintString(toPrint, positionYX, FormatFlags.ToImplementationFlags(flags));
 		}
+		public void PrintFormattedString(string toPrint, Vector2I positionYX)
+		{ PrintFormattedString(toPrint, positionYX, FormatFlags.Normal); }
 
 		/**
 		Dummy function used when application

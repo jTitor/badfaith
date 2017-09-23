@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BadFaith.UI.Terminals.Constants;
 
 namespace BadFaith.UI.Terminals
 {
