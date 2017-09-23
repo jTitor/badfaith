@@ -11,8 +11,10 @@ namespace BadFaith.UI.Terminals
 	{
 		private CursesInterface curses;
 		private Window mainWindow;
+		public Window MainWindow{get{return mainWindow;}}
 		private List<Window> windows;
 		private DefaultPalette palette;
+		public DefaultPalette Palette {get{return palette;} set{palette = value;}}
 		public bool NeedsLayout { get; set; }
 
 		/**
