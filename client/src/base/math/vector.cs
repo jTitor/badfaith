@@ -11,6 +11,17 @@ namespace BadFaith
 	*/
 	public struct Vector2I
 	{
+		#region Static Members
+		private static Vector2I sZero = new Vector2I(0, 0);
+		public static Vector2I Zero { get { return sZero; } }
+		private static Vector2I sOne = new Vector2I(1, 1);
+		public static Vector2I One { get { return sOne; } }
+		private static Vector2I sRight = new Vector2I(1, 0);
+		public static Vector2I Right { get { return sRight; } }
+		private static Vector2I sUp = new Vector2I(0, 1);
+		public static Vector2I Up { get { return sUp; } }
+		#endregion
+
 		public int X, Y;
 
 		public Vector2I(int x, int y)
