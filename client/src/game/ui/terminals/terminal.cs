@@ -12,56 +12,60 @@ namespace BadFaith.UI.Terminals
 		private CursesInterface curses;
 		private Window mainWindow;
 		private List<Window> windows;
-		private Palette palette;
+		private DefaultPalette palette;
 		public bool NeedsLayout { get; set; }
 
-	/**
+		/**
 Manages the terminal display and input.
-	*/
-	public Terminal(Window window){
-		//Set this or you end up with a totally black screen
-		curses.use_default_colors();
-		mainWindow = Window(window, isStatic=True);
-		//We also don't really need to highlight the cursor.
-		curses.curs_set(0);
-		windows = new List<Window>(){mainWindow};
-		/**
-Set this to ensure all windows are resized
-		and refreshed.
 		*/
-		NeedsLayout = true;
-		//Initialize palettes.
-		palette = UI.Palettes.DefaultPalette();
-		foreach(PaletteColor p in palette.All)
-			{curses.init_pair(p.paletteCode, p.cursesForeground, p.cursesBackground);
-			p.cursesCode = curses.color_pair(p.paletteCode);}}
+		public Terminal(Window window)
+		{
+			//Set this or you end up with a totally black screen
+			curses.use_default_colors();
+			mainWindow = Window(window, true);
+			//We also don't really need to highlight the cursor.
+			curses.curs_set(0);
+			windows = new List<Window>() { mainWindow };
+			/**
+Set this to ensure all windows are resized
+			and refreshed.
+			*/
+			NeedsLayout = true;
+			//Initialize palettes.
+			palette = UI.Palettes.DefaultPalette();
+			foreach (PaletteColor p in palette.All)
+			{
+				curses.init_pair(p.paletteCode, p.cursesForeground, p.cursesBackground);
+				p.cursesCode = curses.color_pair(p.paletteCode);
+			}
+		}
 
-	def refresh(self, layoutFunction=_noLayout):
 		/**
-Redraws the screen.
+		Redraws the screen.
 		'layoutFunction' is a callback you provide that
 		takes the terminal as its only parameter;
 		it should rearrange and resize the windows as you desire.
 		if you don't provide one, a no-op dummy is used instead.
 		*/
-		//Check for size changes.
-		screenResized = mainWindow.refreshExtents()
-		//Don't actually lazy redraw
-		//right now since you have to redraw
-		//on screen change, and the screen's supposed to be dynamic.
-		needsLayout = screenResized or needsLayout
-		//if needsLayout:
-		for window in windows:
-			window.clear()
-		layoutFunction(self)
-		for window in windows:
-			window.shouldRefresh()
-		curses.doupdate()
-		needsLayout = False
+		public void Refresh(layoutFunction= _noLayout)
+		{//Check for size changes.
+			bool screenResized = mainWindow.RefreshExtents();
+			//Don't actually lazy redraw
+			//right now since you have to redraw
+			//on screen change, and the screen's supposed to be dynamic.
+			NeedsLayout = screenResized || NeedsLayout;
+			//if needsLayout:
+			foreach (Window w in windows)
+			{ w.Clear(); }
+			layoutFunction();
+			foreach (Window w in windows)
+			{ w.ShouldRefresh(); }
+			curses.doupdate();
+			NeedsLayout = false;
+		}
 
-	def getch(self):
 		/**
-Gets a single character from
+		Gets a single character from
 		standard input. Can be any positive value;
 		you can trust that ASCII values corespond as
 		expected.
@@ -71,34 +75,74 @@ Gets a single character from
 		or test equality against the curses constants for
 		keys such as curses.KEY_LEFT.
 		*/
-		return mainWindow.getch()
+		public int GetCh()
+		{
+			return mainWindow.GetCh();
+		}
 
-	def _implementationSubWindow(self, originYX=(0, 0), extentsYX=(1, 1)):
-		return curses.newwin(extentsYX[0], extentsYX[1], originYX[0], originYX[1])
-
-	def subWindow(self, originYX=(0, 0), extentsYX=(1, 1), isStatic=False):
 		/**
-Makes a subwindow at the given screen
+		Creates the backend elements needed for a subwindow.
+		Returns the handle of the subwindow.
+		 */
+		private int implementationSubWindow(Vector2I originYX, Vector2I extentsYX)
+		{ return curses.newwin(extentsYX.X, extentsYX.Y, originYX.X, originYX.Y); }
+
+		private int implementationSubWindow(Vector2I originYX)
+		{ return implementationSubWindow(originYX, Vector2I.One); }
+
+		private int implementationSubWindow()
+		{ return implementationSubWindow(Vector2I.Zero, Vector2I.One); }
+
+		/**
+		Makes a subwindow at the given screen
 		coordinates and extents, returning
 		the Window object used to manipulate it.
 		*/
-		subwindow = _implementationSubWindow(originYX, extentsYX)
-		result = Window(subwindow, isStatic)
-		windows.append(result)
-		return result
+		public Window SubWindow(Vector2I originYX, Vector2I extentsYX, bool isStatic)
+		{
+			int subWindowHandle = implementationSubWindow(originYX, extentsYX);
+			Window result = new Window(subWindowHandle, isStatic);
+			windows.Add(result);
+			return result;
+		}
 
-	def removeWindow(self, windowID):
+		public Window SubWindow(Vector2I originYX, Vector2I extentsYX)
+		{
+			return SubWindow(originYX, extentsYX, false);
+		}
+
+		public Window SubWindow(Vector2I originYX)
+		{
+			return SubWindow(originYX, Vector2I.One, false);
+		}
+
+		public Window SubWindow()
+		{
+			return SubWindow(Vector2I.Zero, Vector2I.One, false);
+		}
+
 		/**
-Removes a window from rendering.
+		Removes a window from rendering.
 		The main window can't be removed this way,
 		however.
 		*/
-		if windowID != mainWindow.id:
-			windowToRemove = None
-			for window in windows:
-				if window.id == windowID:
-					windowToRemove = window
-			if windowToRemove:
-				windows.remove(windowToRemove)
+		public void removeWindow(int windowID)
+		{
+			if (windowID != mainWindow.Id)
+			{
+				Window windowToRemove = null;
+				foreach (Window w in windows)
+				{
+					if (w.Id == windowID)
+					{
+						windowToRemove = w;
+					}
+				}
+				if (windowToRemove != null)
+				{
+					windows.Remove(windowToRemove);
+				}
+			}
+		}
 	}
 }
