@@ -3,7 +3,7 @@ Contains terminal-specific operations.
 */
 using System.Collections.Generic;
 using BadFaith.UI;
-using BadFaith.UI.Palettes;
+using BadFaith.UI.Terminals.Palettes;
 
 namespace BadFaith.UI.Terminals
 {
@@ -20,11 +20,11 @@ namespace BadFaith.UI.Terminals
 		/**
 Manages the terminal display and input.
 		*/
-		public Terminal(Window window)
+		public Terminal(CursesWindowHandle window)
 		{
 			//Set this or you end up with a totally black screen
 			curses.use_default_colors();
-			mainWindow = Window(window, true);
+			mainWindow = new Window(window, true);
 			//We also don't really need to highlight the cursor.
 			curses.curs_set(0);
 			windows = new List<Window>() { mainWindow };
