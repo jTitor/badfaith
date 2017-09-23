@@ -19,7 +19,7 @@ namespace BadFaith
 			Y = y;
 		}
 
-#region Operators
+		#region Operators
 		/**
 			Negation operator
 		*/
@@ -62,7 +62,48 @@ namespace BadFaith
 		{
 			return lhs.X * rhs.X + lhs.Y * rhs.Y;
 		}
-#endregion
+
+		#region Equality Operators
+		public static bool operator ==(Vector2I lhs, Vector2I rhs)
+		{
+			return lhs.X == rhs.X && lhs.Y == rhs.Y;
+		}
+
+		// override object.Equals
+		public override bool Equals(object obj)
+		{
+			//
+			// See the full list of guidelines at
+			//   http://go.microsoft.com/fwlink/?LinkID=85237
+			// and also the guidance for operator== at
+			//   http://go.microsoft.com/fwlink/?LinkId=85238
+			//
+
+			if (obj == null || GetType() != obj.GetType())
+			{
+				return false;
+			}
+
+			return this == (Vector2I)obj;
+		}
+
+		public bool Equals(Vector2I obj)
+		{
+			return this == obj;
+		}
+
+		// override object.GetHashCode
+		public override int GetHashCode()
+		{
+			return (int)Math.Hashing.FnvHash(new uint[] { (uint)X, (uint)Y });
+		}
+
+		public static bool operator !=(Vector2I lhs, Vector2I rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
+		#endregion
 
 		/**
 		Returns the squared magnitude of this vector.
