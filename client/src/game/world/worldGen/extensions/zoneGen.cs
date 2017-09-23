@@ -1,4 +1,4 @@
-namespace BadFaith.WorldGen
+namespace BadFaith.World.WorldGen
 {
 	public static class XWorldGeneratorZoneMethods
 	{
