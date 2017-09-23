@@ -1,4 +1,4 @@
-namespace BadFaith.World
+namespace BadFaith.WorldGen
 {
 	public static class XWorldGeneratorFieldMethods
 	{

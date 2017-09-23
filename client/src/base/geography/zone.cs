@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace BadFaith
+namespace BadFaith.Geography
 {
-	class Zone
+	public class Zone
 	{
 		//TODO: add fields!
 

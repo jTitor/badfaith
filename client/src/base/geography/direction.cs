@@ -2,7 +2,7 @@
 	direction.cs
  */
 
-namespace BadFaith
+namespace BadFaith.Geography
 {
 	public struct Direction
 	{

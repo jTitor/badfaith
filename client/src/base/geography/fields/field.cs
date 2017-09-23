@@ -3,12 +3,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace BadFaith
+namespace BadFaith.Geography.Fields
 {
 	public class Field
 	{
 		/**
-The table of all fields in use.
+		The table of all fields in use.
 		Each field has an ID that is also its index into this array.
 		All[0] is a null element that isn't connected to anything and can't be entered.
 		*/
@@ -61,7 +61,7 @@ The table of all fields in use.
 		{
 			throw new System.NotImplementedException();
 			/**
-Converts the coordinates to an array index.
+			Converts the coordinates to an array index.
 			*/
 			// return coordinateTuple.value[1] * self.gridSize + coordinateTuple.value[0]
 		}
@@ -70,7 +70,7 @@ Converts the coordinates to an array index.
 		{
 			throw new System.NotImplementedException();
 			/**
-Returns True if the given coordinates are in the field's range,
+			Returns True if the given coordinates are in the field's range,
 			False otherwise.
 			*/
 			// return coordinateTuple.value[0] < self.gridSize and coordinateTuple.value[1] < self.gridSize

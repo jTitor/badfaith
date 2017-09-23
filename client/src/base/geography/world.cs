@@ -1,8 +1,13 @@
-class World(object):
-	def __init__(self):
-		self.sectors = []
-		self.width = 0
-		self.height = 0
+using System.Collections.Generic;
 
-	def addSector(self, sector):
-		self.sectors.append(sector)
+namespace BadFaith.Geography
+{
+	public class World
+	{
+		public Vector2I Dimensions;
+		public List<Sector> Sectors;
+
+		public void AddSector(Sector s)
+		{ Sectors.Add(s); }
+	}
+}

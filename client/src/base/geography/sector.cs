@@ -1,61 +1,88 @@
-class Sector(object):
-	'''
-	'''
+using System.Collections.Generic;
+using BadFaith.Geography.Fields;
 
-	'''The table of all sectors in use.
-	Each sector has an ID that is also its index into this array.
-	All[0] is a null element that isn't connected to anything and can't be entered.
-	'''
-	All = []
+namespace BadFaith.Geography
+{
+	public class Sector
+	{
+		private static List<Sector> all = new List<Sector>();
+		/**The table of all sectors in use.
+		Each sector has an ID that is also its index into this array.
+		All[0] is a null element that isn't connected to anything and can't be entered.
+		*/
+		public static List<Sector> All { get { return all; } }
+		private int sectorId;
+		public int SectorId { get { return sectorId; } }
+		public string Name;
+		private List<Zone> zones = new List<Zone>();
+		/**
+		The zones contained by this sector.
+		*/
+		public List<Zone> Zones { get { return zones; } }
+		private Zone[] gateZones;
+		public Zone[] GateZones { get { return gateZones; } }
 
-	def __init__(self):
-		self.name = "SECTOR_NAME_UNSET"
-		#The zones contained by this sector.
-		self.zones = []
-		self.sectorID = len(Sector.All)
-		Sector.All.append(self)
-		#The inter-sector zones; these are the ways
-		#in and out of the sector.
-		#The zones correspond to the cardinal directions;
-		#That zone's gate in that direction jumps to the
-		#destination sector's opposite direction gate zone,
-		#in the opposite direction gate.
-		self.gateZones = (Zone(), Zone(), Zone(), Zone())
-		for zone in self.gateZones:
-			self.addZone(zone)
+		public Sector()
+		{
+			Name = "SECTOR_NAME_UNSET";
+			sectorId = Sector.All.Count;
+			Sector.All.Add(this);
+			//The inter-sector zones; these are the ways
+			//in and out of the sector.
+			//The zones correspond to the cardinal directions;
+			//That zone's gate in that direction jumps to the
+			//destination sector's opposite direction gate zone,
+			//in the opposite direction gate.
+			gateZones = new Zone[] { new Zone(), new Zone(), new Zone(), new Zone() };
+			foreach (Zone z in gateZones)
+			{
+				AddZone(z);
+			}
+		}
 
-	def _doAddZone(self, zone):
-		assert isinstance(zone, Zone)
-		zone.owningSectorID = self.sectorID
-		#Fix up any reverse-lookup tables.
-		self.zones.append(zone)
-		#raise NotImplementedError
-
-	def addZone(self, zone):
-		'''Makes the given zone a member of this sector.
+		private void doAddZone(Zone zone)
+		{
+			zone.OwningSectorId = sectorId;
+			//Fix up any reverse-lookup tables.
+			zones.Add(zone);
+			//raise NotImplementedError
+		}
+		/**
+		Makes the given zone a member of this sector.
 		If `zone` is a tuple, all zones inside of the
 		tuple are added.
-		'''
-		if hasattr(zone, '__iter__'):
-			for z in zone:
-				self._doAddZone(z)
-		else:
-			self._doAddZone(zone)
+		*/
+		public void AddZone(IEnumerable<Zone> zones)
+		{
+			foreach (Zone z in zones)
+			{ doAddZone(z); }
+		}
+		public void AddZone(Zone zone)
+		{
+			AddZone(new Zone[] { zone });
+		}
 
-	def fullName(self):
-		return self.name
+		public string FullName()
+		{
+			return Name;
+		}
 
-	def linkTo(self, other, direction):
-		'''Connects this sector to another zone's sector in the given direction.
+		/**
+		Connects this sector to another zone's sector in the given direction.
 		Raises WorldGenError if either sector has a connection that
 		would be overriden by this connection.
-		'''
-		sourceGateZone = self.gateZones[direction.value]
-		destinationGateZone = other.gateZones[Directions.opposite(direction).value]
-		sourceGate = sourceGateZone.gates[direction.value]
-		destinationGate = destinationGateZone.gates[Directions.opposite(direction).value]
-		if sourceGate.destinationFieldID != 0:
-			raise WorldGenError("Source gate already connected to another sector!")
-		if destinationGate.destinationFieldID != 0:
-			raise WorldGenError("Destination gate already connected to another sector!")
-		sourceGate.linkTo(destinationGate)
+		*/
+		public void LinkTo(Sector other, Direction direction)
+		{
+			Zone sourceGateZone = gateZones[direction.Value];
+			Zone destinationGateZone = other.gateZones[direction.Opposite().Value];
+			Gate sourceGate = sourceGateZone.Gates[direction.Value];
+			Gate destinationGate = destinationGateZone.Gates[direction.Opposite().Value];
+			if (sourceGate.DestinationFieldID != 0)
+			{ throw new WorldGenError("Source gate already connected to another sector!"); }
+			if (destinationGate.DestinationFieldID != 0)
+			{ throw new WorldGenError("Destination gate already connected to another sector!"); }
+			sourceGate.LinkTo(destinationGate);
+		}
+	}
+}

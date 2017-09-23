@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BadFaith
+namespace BadFaith.Geography.Fields
 {
 public class Gate: Field
 {
@@ -14,7 +14,7 @@ public class Gate: Field
 	all gates are fields.
 	*/
 	private static List<Gate> _all = new List<Gate>();
-	public static List<Gate> All { get { return _all; } }
+	public static List<Gate> AllGates { get { return _all; } }
 	public static void InitGates(int numGates)
 	{
 		throw new System.NotImplementedException("Implement null element initialization");

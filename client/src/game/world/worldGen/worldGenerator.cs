@@ -1,4 +1,6 @@
-namespace BadFaith.World
+using System.Collections.Generic;
+using BadFaith.World.WorldGen;
+namespace BadFaith.World.WorldGen
 {
 	public class WorldGenerator
 	{
@@ -8,33 +10,31 @@ namespace BadFaith.World
 		names. This tries to pick a name
 		that wasn't used before.
 		 */
-		def randomNameWithUsedList(nameList, usedIndexList):
-	namesLen = len(nameList)
-	nameIndex = random.randint(0, namesLen-1)
-	while nameIndex in usedIndexList:
-		nameIndex = random.randint(0, namesLen-1)
-	usedIndexList.append(nameIndex)
-	return(nameList[nameIndex])
+		private string randomNameWithUsedList(string[] nameList, List<int> usedIndexList){
+	int namesLen = nameList.Length;
+	int nameIndex = random.randint(0, namesLen-1);
+	while (usedIndexList.Contains(nameIndex))
+		{nameIndex = random.randint(0, namesLen-1);}
+	usedIndexList.Add(nameIndex);
+	return nameList[nameIndex];
+	}
 
-class WorldGen(object):
-	'''
-	'''
+	/**
+	Returns a new randomly-generated world.
+	*/
+	public static World GenerateWorld()
+	{
+		World world = new World();
+		world.Dimensions = new Vector2I(8, 3);
+		//Generate the sectors.
+		WorldGenerator.generateSectorsForWorld(world);
+		//Now do the zones...
+		foreach (Sector s in world.Sectors)
+			{WorldGenerator.generateZonesForSector(s, random.randint(1, 2));
+			//Now do the fields.
+			WorldGenerator.generateFieldsForSector(s, 20);}
 
-	@classmethod
-	def generateWorld(cls):
-		'''Returns a new randomly-generated world.
-		'''
-		world = World()
-		world.width = 8
-		world.height = 3
-		#Generate the sectors.
-		cls._generateSectorsForWorld(world)
-		#Now do the zones...
-		for s in world.sectors:
-			cls._generateZonesForSector(s, random.randint(1, 2))
-			#Now do the fields.
-			cls._generateFieldsForSector(s, 20)
-
-		return world
+		return world;
+		}
 	}
 }
