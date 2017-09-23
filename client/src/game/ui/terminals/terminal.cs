@@ -34,11 +34,11 @@ Set this to ensure all windows are resized
 			*/
 			NeedsLayout = true;
 			//Initialize palettes.
-			palette = UI.Palettes.DefaultPalette();
+			palette = new DefaultPalette();
 			foreach (PaletteColor p in palette.All)
 			{
-				curses.init_pair(p.paletteCode, p.cursesForeground, p.cursesBackground);
-				p.cursesCode = curses.color_pair(p.paletteCode);
+				curses.init_pair(p.PaletteCode, p.CursesForeground, p.CursesBackground);
+				p.CursesCode = curses.color_pair(p.PaletteCode);
 			}
 		}
 
@@ -61,7 +61,7 @@ Set this to ensure all windows are resized
 			{ w.Clear(); }
 			layoutFunction();
 			foreach (Window w in windows)
-			{ w.ShouldRefresh(); }
+			{ w.RequestRefresh(); }
 			curses.doupdate();
 			NeedsLayout = false;
 		}
@@ -102,7 +102,7 @@ Set this to ensure all windows are resized
 		*/
 		public Window SubWindow(Vector2I originYX, Vector2I extentsYX, bool isStatic)
 		{
-			int subWindowHandle = implementationSubWindow(originYX, extentsYX);
+			CursesWindow subWindowHandle = implementationSubWindow(originYX, extentsYX);
 			Window result = new Window(subWindowHandle, isStatic);
 			windows.Add(result);
 			return result;

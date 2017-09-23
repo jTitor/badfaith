@@ -10,7 +10,7 @@ namespace BadFaith.UI.Terminals.Palettes
 		were called on its palette number.
 		*/
 		private int cursesCode;
-		public int CursesCode { get { return cursesCode; } }
+		public int CursesCode { get { return cursesCode; } set { cursesCode = value; } }
 		/**The curses constant that represents this
 		palette's foreground color.
 		*/
