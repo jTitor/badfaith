@@ -18,7 +18,7 @@ namespace BadFaith
 	{
 		private static float kMinUpdatableTimeSeconds = 0.01f;
 		private bool shouldQuit = false;
-		private World world = null;
+		private Geography.World world = null;
 		// //All the players in the game, basically.
 		// //update() is called on these elements
 		// //to update the world state.
@@ -32,7 +32,7 @@ namespace BadFaith
 		{
 			terminal = inTerminal;
 			// //Prime the data tables!
-			TableOps.setup();
+			TableOps.Setup();
 		}
 
 		public void RunWithNewWorld()
@@ -57,10 +57,10 @@ namespace BadFaith
 			foreach (View v in views)
 			{
 				//TODO: make this DOD
-				v.update(this);
+				v.Update(this);
 			}
 			//Actually execute those world commands.
-			commandList.update(this);
+			commandList.Update(this);
 		}
 
 		protected void render()
@@ -68,7 +68,8 @@ namespace BadFaith
 			//Render all views.
 			foreach (View v in views)
 			{
-				v.render()}
+				v.render();
+			}
 		}
 
 		private void gameLoop()

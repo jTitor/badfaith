@@ -1,55 +1,62 @@
-namespace BadFaith
+using BadFaith.Geography.Fields;
+
+namespace BadFaith.Commands
 {
-	public class EnterGate
+	/**
+	Attempts to enter the field's gate,
+	if it has one.
+	*/
+	public class EnterGate : Command
 	{
-		class EnterGate(object):
-		'''Attempts to enter the field's gate,
-		if it has one.
-		'''
-		def __init__(self, actorID):
-			self.actorID = actorID
-			self.originFieldID = Actor.All[self.actorID].fieldID
+		public readonly int ActorId;
+		public EnterGate(int actorId) : base(Actor.All[actorId].FieldId)
+			{ActorId = actorId;}
 
-		def render(self, viewerID):
-			'''Performs a human-readable rendering of this event.
-			'''
-			#Remember that this has been executed
-			#and is thus happening on the *destination* field's
-			#channel.
-			actor = Actor.All[self.actorID]
-			if self.actorID == viewerID:
-				return "You see yourself entering the gate???."
-			return "{0} enters the gate!.".format(actor.name)
+		/**
+		Performs a human-readable rendering of this event.
+		*/
+		public override string Render(int viewerId)
+			{
+			//Remember that this has been executed
+			//and is thus happening on the *destination* field's
+			//channel.
+			Actor actor = Actor.All[ActorId];
+			if (ActorId == viewerId)
+				{return "You see yourself entering the gate???"; }
+			return string.Format("{0} enters the gate!.", actor.Name);
+			}
 
-		def execute(self, commandList):
-			if Actor.All[self.actorID].enterGate():
-				commandList.addCommand(Commands.EnteredGate(self.actorID))
-				return True
-			return False
+		public override bool Execute(CommandList commandList)
+			{if (Actor.All[ActorId].EnterGate())
+				{commandList.AddCommand(new Commands.EnteredGate(ActorId));
+				return true;}
+			return false;}
 	}
 
-	public class EnteredGate
+	/**
+	Observer version of EnterGate.
+	*/
+	public class EnteredGate : Command
 	{
-		class EnteredGate(object):
-		'''Observer version of EnterGate.
-		'''
-		def __init__(self, actorID):
-			self.actorID = actorID
-			self.originFieldID = Actor.All[self.actorID].fieldID
+		public readonly int ActorId;
+		public EnteredGate(int actorId) : base(Actor.All[actorId].FieldId)
+			{
+			ActorId = actorId;
+			}
 
-		def render(self, viewerID):
-			'''Performs a human-readable rendering of this event.
-			'''
-			#Remember that this has been executed
-			#and is thus happening on the *destination* field's
-			#channel.
-			actor = Actor.All[self.actorID]
-			field = Field.All[self.originFieldID]
-			if self.actorID == viewerID:
-				return "You gate to {0}.".format(field.fullName)
-			return "{0} exits the gate!.".format(actor.name)
-
-		def execute(self, commandList):
-			return True
+		/**
+		Performs a human-readable rendering of this event.
+		*/
+		public override string Render(int viewerId)
+			{
+			//Remember that this has been executed
+			//and is thus happening on the *destination* field's
+			//channel.
+			Actor actor = Actor.All[ActorId];
+			Field field = Field.All[OriginFieldId];
+			if (ActorId == viewerId)
+				{return string.Format("You gate to {0}.", field.FullName);}
+			return string.Format("{0} exits the gate!.", actor.Name);
+			}
 	}
 }
