@@ -1,90 +1,126 @@
+using System.Collections.Generic;
+
+using BadFaith.Commands;
+using BadFaith.Geography.Fields;
+using BadFaith.UI;
+using BadFaith.UI.Terminals;
 using BadFaith.Views.Player;
 
 namespace BadFaith.Views
 {
-	class PlayerView(object):
-	'''Displays world state and relays player input as world commands.
+	/**
+	Displays world state and relays player input as world commands.
 
 	There are two main sections: the world display
 	and the command interpreter. The interpreter is split into
 	two halves, a top line displaying system responses to their
 	actions and a bottom line where the player enters commands.
 	By default most commands are keyboard shortcuts, and '`' activates the interpreter mode.
-	'''
-	def _doControlActor(self, actorID):
-		if actorID > len(Actor.All):
-			raise RuntimeError("Invalid actor {0}".format(actorID))
-		self.controlledActorID = actorID
-		self.actor = Actor.All[self.controlledActorID]
-		self._updateField()
-
-	def _updateField(self):
-		self.field = Field.All[self.actor.fieldID]
-
-	def __init__(self, game, actorID=0):
-		print("Entering world...")
-		self._doControlActor(actorID)
-		self.actionList = {
-			ord('q'): game.quit,
-			ord('w'): lambda: self.move(Directions.North),
-			ord('s'): lambda: self.move(Directions.South),
-			ord('a'): lambda: self.move(Directions.East),
-			ord('d'): lambda: self.move(Directions.West),
-			ord('f'): self.changeField,
-			ord('g'): self.useGate,
-			ord('l'): self.lookAll
+	*/
+	class PlayerView
+	{
+		public int ControlledActorId;
+		public Actor Actor;
+		public Field Field;
+		public CommandList CommandList;
+		public Terminal Terminal;
+		public pass ActionList;
+		public UIElement[] UiAll;
+		public ScrollBox UiWorldEvents;
+		public TextLine UiPlayerLocation;
+		public TextLine UiPlayerStatus;
+		public TextLine UiInterpreterResponse;
+		public TextLine UiInterpreterInput;
+		private void _doControlActor(int actorId)
+		{
+			if (actorId > Actor.All.Count)
+			{ throw new GameException(string.Format("Invalid actor {0}", actorId)); }
+			ControlledActorId = actorId;
+			Actor = Actor.All[ControlledActorId];
+			_updateField();
 		}
-		self.commandList = game.commandList
-		#UI elements.
-		self.terminal = game.terminal
-		self.uiWorldEvents = UI.ScrollBox(self.terminal)
-		self.uiPlayerLocation = UI.TextLine(self.terminal)
-		self.uiPlayerStatus = UI.TextLine(self.terminal)
-		self.uiInterpreterResponse = UI.TextLine(self.terminal)
-		self.uiInterpreterInput = UI.TextLine(self.terminal)
-		self.uiPlayerLocation.setColor(self.terminal.palette.whiteOnBlack)
-		self.uiPlayerStatus.setColor(self.terminal.palette.whiteOnBlack)
-		self.uiInterpreterResponse.setColor(self.terminal.palette.whiteOnBlack)
-		self.uiInterpreterInput.label = ">"
-		self.uiInterpreterResponse.label = "What next?"
-		self.uiAll = (self.uiWorldEvents, self.uiPlayerLocation, self.uiPlayerStatus, self.uiInterpreterResponse, self.uiInterpreterInput)
 
-	def updateUI(self):
-		self.uiInterpreterResponse.label = "What next?"
-		self.uiPlayerLocation.label = self.actorLocation()
-		self.uiPlayerStatus.label = self.actorState()
-		for fieldEvent in self._getFieldChannel():
-			self.uiWorldEvents.addLine(fieldEvent.render(self.controlledActorID))
-		for uiElement in self.uiAll:
-			uiElement.render()
+		private void _updateField()
+		{ Field = Field.All[Actor.FieldId]; }
 
-	def layout(self, _):
-		'''UI layout callback.
-		'''
-		self.uiInterpreterInput.toBottom()
-		self.uiInterpreterResponse.toBottom(1)
-		self.uiPlayerStatus.toBottom(2)
-		self.uiWorldEvents.toTop(1)
-		self.uiPlayerLocation.toTop()
-		self.uiInterpreterInput.fillRow()
-		self.uiInterpreterResponse.fillRow()
-		self.uiPlayerStatus.fillRow()
-		screenExtents = self.terminal.mainWindow.extents
-		self.uiWorldEvents.setExtents((screenExtents[0]-4, screenExtents[1]))
-		self.uiPlayerLocation.fillRow()
-		self.updateUI()
+		public PlayerView(Game game, int actorId = 0)
+		{
+			print("Entering world...");
+			_doControlActor(actorId);
+			ActionList = {
+				ord('q'): game.Quit,
+			ord('w'): lambda: Move(Directions.North),
+			ord('s'): lambda: Move(Directions.South),
+			ord('a'): lambda: Move(Directions.East),
+			ord('d'): lambda: Move(Directions.West),
+			ord('f'): ChangeField,
+			ord('g'): UseGate,
+			ord('l'): LookAll
+			};
+			CommandList = game.CommandList;
+			//UI elements.
+			Terminal = game.Terminal;
+			ScrollBox UiWorldEvents = new ScrollBox(Terminal);
+			TextLine UiPlayerLocation = new TextLine(Terminal);
+			TextLine UiPlayerStatus = new TextLine(Terminal);
+			TextLine UiInterpreterResponse = new TextLine(Terminal);
+			TextLine UiInterpreterInput = new TextLine(Terminal);
+			UiPlayerLocation.SetColor(Terminal.Palette.WhiteOnBlack);
+			UiPlayerStatus.SetColor(Terminal.Palette.WhiteOnBlack);
+			UiInterpreterResponse.SetColor(Terminal.Palette.WhiteOnBlack);
+			UiInterpreterInput.Label = ">";
+			UiInterpreterResponse.Label = "What next?";
+			UIElement[] UiAll = { UiWorldEvents, UiPlayerLocation, UiPlayerStatus, UiInterpreterResponse, UiInterpreterInput };
+		}
 
-	def update(self, game):
-		#Get player input here and send commands here.
-		playerInput = game.terminal.getch()
-		if playerInput in self.actionList:
-			#If input's a valid command, run it.
-			self.actionList[playerInput]()
+		public void UpdateUI()
+		{
+			UiInterpreterResponse.Label = "What next?";
+			UiPlayerLocation.Label = ActorLocation();
+			UiPlayerStatus.Label = ActorState();
+			foreach (Command fieldEvent in _getFieldChannel())
+			{ UiWorldEvents.AddLine(fieldEvent.Render(ControlledActorId)); }
+			foreach (UIElement uiElement in UiAll)
+			{ uiElement.Render(); }
+		}
 
-	def _getFieldChannel(self):
-		return self.commandList.fieldEvents[self.actor.fieldID]
+		/**
+		UI layout callback.
+		*/
+		public void Layout(_)
+		{
+			UiInterpreterInput.ToBottom();
+			UiInterpreterResponse.ToBottom(1);
+			UiPlayerStatus.ToBottom(2);
+			UiWorldEvents.ToTop(1);
+			UiPlayerLocation.ToTop();
+			UiInterpreterInput.FillRow();
+			UiInterpreterResponse.FillRow();
+			UiPlayerStatus.FillRow();
+			Vector2I screenExtents = Terminal.MainWindow.Extents;
+			UiWorldEvents.SetExtents((screenExtents.X - 4, screenExtents.Y));
+			UiPlayerLocation.FillRow();
+			UpdateUI();
+		}
 
-	def render(self):
-		#Display game world here.
-		self.terminal.refresh(self.layout)
+		public void Update(Game game)
+		{
+			//Get player input here and send commands here.
+			int playerInput = game.Terminal.GetCh();
+			if (ActionList.Contains(playerInput))
+			{
+				//If input's a valid command, run it.
+				ActionList[playerInput]();
+			}
+		}
+
+		private List<Command> _getFieldChannel()
+		{ return CommandList.FieldEvents[Actor.FieldId]; }
+
+		public void Render()
+		{
+			//Display game world here.
+			Terminal.Refresh(Layout);
+		}
+	}
 }

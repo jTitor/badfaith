@@ -29,7 +29,7 @@ namespace BadFaith.World.WorldGen
 				foreach (Field field in zone.Fields)
 				{
 					//Give a name.
-					field.Name = cls.RandomNameWithUsedList(WorldGenConstants.FieldNames, usedNameIndices);
+					field.Name = WorldGenerator.RandomNameWithUsedList(WorldGenConstants.FieldNames, usedNameIndices);
 					assert field.name
 				}
 			}

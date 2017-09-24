@@ -1,40 +1,51 @@
 namespace BadFaith.Views.Player
 {
-			/**
-			View commands for the player view.
-			 */
-			public static class XViewCommands
+	/**
+	View commands for the player view.
+	 */
+	public static class XViewCommands
+	{
+		public string DescribeSelf()
+		{ return string.Format("You are {0}.", Actor.Name); }
+
+		public string DescribeField()
+		{
+			string fieldDescription = string.Format("You are in {0}.", Field.FullName);
+			if (Field.FieldID == 0)
+			{ fieldDescription += "\nYou get the feeling you shouldn't be here..."; }
+			if (Field.Type == Field.Types.Gate)
 			{
-				def describeSelf(self):
-		return "You are {0}.".format(self.actor.name)
-
-	def describeField(self):
-		fieldDescription = "You are in {0}.".format(self.field.fullName())
-		if self.field.fieldID == 0:
-			fieldDescription += "\nYou get the feeling you shouldn't be here..."
-		if self.field.type == Field.Types.Gate:
-			otherField = Field.All[self.field.destinationFieldID]
-			fieldDescription += "\nThis is a gate field! It's pointing to {0}.".format(otherField.fullName())
-		return fieldDescription
-
-	def lookAll(self):
-		'''Looks at everything in the field.
-		'''
-		#Print to world status even though this isn't a event.
-		self.uiWorldEvents.addLine(self.describeField())
-
-	def actorState(self):
-		return("Position:{0}, Armor: {1}/{2}, Psyche: {3}/{4}".format(self.actor.fieldPosition, self.actor.armor, self.actor.maxArmor, self.actor.psyche, self.actor.maxPsyche))
-
-	def actorLocation(self):
-		return "{0}: {1}".format(self.actor.name, self.field.fullName())
-
-	def describeActor(self, otherActorID):
-		if otherActorID == self.controlledActorID:
-			self.describeSelf()
-			return
-
-		actor = Actor.All[otherActorID]
-		print("You see a {0}.".format(actor.name))
+				Field otherField = Field.All[Field.DestinationFieldID];
+				fieldDescription += string.Format("\nThis is a gate field! It's pointing to {0}.", otherField.FullName);
 			}
+			return fieldDescription;
+		}
+
+		public void LookAll()
+		{
+			/**
+			Looks at everything in the field.
+			*/
+			//Print to world status even though this isn't a event.
+			UiWorldEvents.AddLine(DescribeField());
+		}
+
+		public string ActorState()
+		{
+			return string.Format("Position:{0}, Armor: {1}/{2}, Psyche: {3}/{4}", Actor.FieldPosition, Actor.Armor, Actor.MaxArmor, Actor.Psyche, Actor.MaxPsyche);
+		}
+
+		public string ActorLocation()
+		{ return string.Format("{0}: {1}", Actor.Name, Field.fullName); }
+
+		public void DescribeActor(int otherActorID)
+		{
+			if (otherActorID == ControlledActorID)
+				DescribeSelf();
+			return;
+
+			Actor actor = Actor.All[otherActorID];
+			print(string.Format("You see a {0}.", actor.Name));
+		}
+	}
 }

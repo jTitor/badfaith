@@ -1,6 +1,6 @@
 namespace BadFaith.UI
 {
-	class TextLine(UIElement):
+	class TextLine(UIElement):UIElement
 		'''Displays a single string inside itself.
 		This tries to have the same width as the screen.
 		'''

@@ -2,16 +2,22 @@ namespace BadFaith.Views.Player
 {
 	public static class XActorControlCommands
 	{
-		def controlActor(self, actorID):
-		'''Immediately takes control of an actor.
-		'''
-		self._doControlActor(actorID)
-		self.uiInterpreterResponse.label = "You are now {0}.".format(self.actor.name)
+		/**
+		Immediately takes control of an actor.
+		*/
+		public void ControlActor(int actorID)
+		{
+			_doControlActor(actorID);
+			UiInterpreterResponse.label = string.Format("You are now {0}.", Actor.Name);
+		}
 
-	def respawn(self):
-		'''Creates a new actor and puts you in control
-		of them, destroying the old actor you might've been in.
-		'''
-		raise NotImplementedError
+	/**
+	Creates a new actor and puts you in control
+	of them, destroying the old actor you might've been in.
+	*/
+	public void Respawn()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

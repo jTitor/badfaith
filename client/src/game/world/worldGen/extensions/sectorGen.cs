@@ -54,7 +54,7 @@ namespace BadFaith.World.WorldGen
 			//Do naming and other characterization here.
 			List<int> usedNameIndices = new List<int>();
 			foreach (Sector sector in world.Sectors)
-			{ sector.Name = cls.RandomNameWithUsedList(WorldGenConstants.SectorNames, usedNameIndices); }
+			{ sector.Name = WorldGenerator.RandomNameWithUsedList(WorldGenConstants.SectorNames, usedNameIndices); }
 		}
 	}
 }

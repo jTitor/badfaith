@@ -12,7 +12,7 @@ namespace BadFaith.World.WorldGen
 		names. This tries to pick a name
 		that wasn't used before.
 		 */
-		public string RandomNameWithUsedList(string[] nameList, List<int> usedIndexList)
+		public static string RandomNameWithUsedList(string[] nameList, List<int> usedIndexList)
 		{
 			int namesLen = nameList.Length;
 			int nameIndex = random.randint(0, namesLen - 1);
