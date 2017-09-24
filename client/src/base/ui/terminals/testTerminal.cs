@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using BadFaith.UI.Terminals.Constants;
+using BadFaith.Ui.Terminals.Constants;
 
-namespace BadFaith.UI.Terminals
+namespace BadFaith.Ui.Terminals
 {
 	public class TestTerminal
 	{

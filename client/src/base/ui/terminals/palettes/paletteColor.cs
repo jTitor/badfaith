@@ -1,4 +1,4 @@
-namespace BadFaith.UI.Terminals.Palettes
+namespace BadFaith.Ui.Terminals.Palettes
 {
 	public class PaletteColor
 	{

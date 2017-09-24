@@ -2,10 +2,10 @@
 Contains terminal-specific operations.
 */
 using System.Collections.Generic;
-using BadFaith.UI;
-using BadFaith.UI.Terminals.Palettes;
+using BadFaith.Ui;
+using BadFaith.Ui.Terminals.Palettes;
 
-namespace BadFaith.UI.Terminals
+namespace BadFaith.Ui.Terminals
 {
 	public class Terminal
 	{

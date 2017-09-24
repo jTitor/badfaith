@@ -1,56 +1,85 @@
-namespace BadFaith.Tests.UI
+using System.Collections.Generic;
+
+using BadFaith.Ui.Terminals;
+using BadFaith.Ui.Elements;
+using BadFaith.Ui.Terminals.Constants;
+
+namespace BadFaith.Tests.Ui.Elements
 {
 	public class TestAll
 	{
-		import random
-import string
-from .terminal import FormatFlags
 
-class TestUI(object):
-	'''Tests the UI elements.
-	'''
-	def __init__(self, window):
-		self.terminal = Terminal(window)
-		self.scrollBox = UI.ScrollBox(self.terminal)
-		self.textLine1 = UI.TextLine(self.terminal, "Press 'A' to add a line...")
-		self.textLine1.setColor(self.terminal.palette.whiteOnBlack)
-		self.textLine2 = UI.TextLine(self.terminal)
-		self.textLine2.label = "Or press 'Q' to quit"
-		self.textLine2.setColor(self.terminal.palette.whiteOnBlack, FormatFlags.Reverse)
+		/**
+		Tests the Ui elements.
+		*/
+		public class TestUi
+		{
+			public Terminal Terminal;
+			public ScrollBox ScrollBox;
+			public TextLine TextLine1;
+			public TextLine TextLine2;
+			public TestUi(CursesWindowHandle window)
+			{
+				Terminal = new Terminal(window);
+				ScrollBox = new ScrollBox(Terminal);
+				TextLine1 = new TextLine(this.Terminal, "Press 'A' to add a line...");
+				TextLine1.SetColor(Terminal.Palette.WhiteOnBlack);
+				TextLine2 = new TextLine(Terminal);
+				TextLine2.Label = "Or press 'Q' to quit";
+				TextLine2.SetColor(Terminal.Palette.WhiteOnBlack, FormatFlags.Reverse);
+			}
 
-	def layout(self, _):
-		self.textLine2.toBottom()
-		self.textLine2.fillRow()
-		self.textLine1.toBottom(1)
-		self.textLine1.fillRow()
-		screenExtents = self.terminal.mainWindow.extents
-		self.scrollBox.setExtents((screenExtents[0]-2,screenExtents[1]))
-		self.textLine2.render()
-		self.textLine1.render()
-		self.scrollBox.render()
+			public void Layout(_)
+			{
+				TextLine2.ToBottom();
+				TextLine2.FillRow();
+				TextLine1.ToBottom(1);
+				TextLine1.FillRow();
+				Vector2I screenExtents = Terminal.MainWindow.Extents;
+				ScrollBox.SetExtents(new Vector2I(screenExtents.X - 2, screenExtents.Y));
+				TextLine2.Render();
+				TextLine1.Render();
+				ScrollBox.Render();
+			}
 
-	def addRandomLine(self):
-		newLine = "".join([random.choice(string.letters) for i in xrange(random.randint(3, 90))])
-		self.textLine2.label = "Added '{0}'".format(newLine)
-		self.scrollBox.addLine(newLine)
+			public void AddRandomLine()
+			{
+				List<string> newLineElems = new List<string>();
+				for (int i = 0; i < random.randint(3, 90); ++i)
+				{
+					newLineElems.Add(random.choice(string.letters));
+				}
+				string newLine = string.Join("", newLineElems);
+				TextLine2.Label = string.Format("Added '{0}'", newLine);
+				ScrollBox.AddLine(newLine);
+			}
 
-	def run(self):
-		#While we haven't hit Q:
-		shouldQuit = False
-		while not shouldQuit:
-			#Refresh the window.
-			lastChar = self.terminal.getch()
-			if lastChar == ord('a') or lastChar == ord('A'):
-				self.addRandomLine()
-			shouldQuit = lastChar == ord('q') or lastChar == ord('Q')
-			self.terminal.refresh(self.layout)
+			public void Run()
+			{
+				//While we haven't hit Q:
+				bool shouldQuit = false;
+				while (!shouldQuit)
+				{
+					//Refresh the window.
+					int lastChar = Terminal.getch();
+					if (lastChar == ord('a') or lastChar == ord('A'))
+					{
+						AddRandomLine();
+					}
+					shouldQuit = lastChar == ord('q') || lastChar == ord('Q');
+					Terminal.Refresh(Layout);
+				}
+			}
+		}
 
-import curses
-def testEntryPoint(stdscr):
-	#Create and run an instance.
-	TestUI(stdscr).run()
+		// import curses
+		public static void testEntryPoint(CursesContext stdscr)
+		{
+			//Create and run an instance.
+			new TestUi(stdscr).Run();
+		}
 
-if __name__ == "__main__":
-	curses.wrapper(testEntryPoint)
+		// if __name__ == "__main__":
+		// 	curses.wrapper(testEntryPoint)
 	}
 }

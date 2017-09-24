@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BadFaith.UI.Terminals.Constants
+namespace BadFaith.Ui.Terminals.Constants
 {
 	/**
 	Formatting codes for character printing.

@@ -1,40 +1,60 @@
-namespace BadFaith.UI
+using System.Collections.Generic;
+using BadFaith.Ui.Terminals;
+
+namespace BadFaith.Ui.Elements
 {
-	class ScrollBox(UIElement):
-		'''Displays multiple lines,
-		removing the oldest as it goes.
-		'''
-		def __init__(self, terminal, bufferMax=80):
-			super(UI.ScrollBox, self).__init__(terminal)
-			#Now init our data.
-			'''The lines currently being displayed.
-			Always displays the *last* of these.
-			'''
-			self.lines = []
-			'''The maximum number of lines
-			stored before the oldest gets removed.
-			'''
-			assert bufferMax > 0
-			self.bufferMax = bufferMax
+	/**
+	Displays multiple lines,
+	removing the oldest as it goes.
+	*/
+	public class ScrollBox : UiElement
+	{
+		/**
+		The lines currently being displayed.
+		Always displays the *last* of these.
+		*/
+		public List<string> Lines = new List<string>();
+		/**
+		The maximum number of lines
+		stored before the oldest gets removed.
+		*/
+		public uint BufferMax;
 
-		def addLine(self, stringToAdd=""):
-			'''Adds a line to the box.
-			If the line contains newlines,
-			they're each considered a separate line.
-			'''
-			allStrings = stringToAdd.split('\n')
-			for s in allStrings:
-				self.lines.append(s)
-			#Also pop off any excess from the top.
-			while len(self.lines) > self.bufferMax:
-				self.lines.pop(0)
+		public ScrollBox(Terminal terminal, uint bufferMax = 80) : base(terminal)
+		{
+			//Now init our data.
 
-		def render(self):
-			'''Renders this ScrollBox.
-			'''
-			linesToRender = min(len(self.lines), self.extents[0])
-			stringPosition = [0, 0]
-			for s in self.lines[-linesToRender:]:
-				self.printString(s, stringPosition)
-				stringPosition[0] += 1
+			BufferMax = bufferMax;
+		}
+
+		/**
+		Adds a line to the box.
+		If the line contains newlines,
+		they're each considered a separate line.
+		*/
+		public void AddLine(string stringToAdd = "")
+		{
+
+			string[] allStrings = stringToAdd.Split('\n');
+			foreach (string s in allStrings)
+			{ Lines.Add(s); }
+			//Also pop off any excess from the top.
+			while ((uint)Lines.Count > BufferMax)
+			{ Lines.RemoveAt(0); }
+		}
+
+		/**
+		Renders this ScrollBox.
+		*/
+		public override void Render()
+		{
+			uint linesToRender = (uint)min(Lines.Count, (uint)Extents.X);
+			Vector2I stringPosition = Vector2I.Zero;
+			foreach (string s in Lines.GetRange((int)(((uint)Lines.Count) - linesToRender), (int)linesToRender))
+			{
+				PrintString(s, stringPosition);
+				stringPosition.X += 1;
+			}
+		}
+	}
 }

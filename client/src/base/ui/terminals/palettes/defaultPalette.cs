@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BadFaith.UI.Terminals.Palettes
+namespace BadFaith.Ui.Terminals.Palettes
 {
 	/**
 	A set of common palette codes. An instance must be

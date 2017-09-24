@@ -1,21 +1,20 @@
-using BadFaith.UI.Terminals;
+using BadFaith.Ui.Terminals;
 
-namespace BadFaith.UI
+namespace BadFaith.Ui.Elements
 {
 	/**
 	Displays a single string inside itself.
 	This tries to have the same width as the screen.
 	*/
-	class TextLine : UIElement
+	public class TextLine : UiElement
 	{
 		/**
 		The text to display.
 		*/
 		public string Label;
 
-		public TextLine(self, Terminal terminal, string label = "")
+		public TextLine(Terminal terminal, string label = "") : base(terminal)
 		{
-			super(UI.TextLine, self).__init__(terminal);
 			//Now init our data.
 			Label = label;
 		}

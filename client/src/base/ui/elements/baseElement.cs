@@ -1,18 +1,18 @@
 /**
 	baseElement.cs
-	Specifies UI elements.
+	Specifies Ui elements.
 */
-using BadFaith.UI.Terminals;
+using BadFaith.Ui.Terminals;
 
-namespace BadFaith.UI
+namespace BadFaith.Ui.Elements
 {
 	/**
-	Base class for UI elements.
+	Base class for Ui elements.
 	*/
-	public class UIElement : Window
+	public abstract class UiElement : Window
 	{
 		public Window MainWindow;
-		public UIElement(Terminal terminal)
+		public UiElement(Terminal terminal)
 		{
 			//Make the window.
 			implementationWindow = terminal._implementationSubWindow();
@@ -57,5 +57,7 @@ namespace BadFaith.UI
 		{
 			SetOrigin(new Vector2I(displacement, Origin.Y));
 		}
+
+		public abstract void Render();
 	}
 }

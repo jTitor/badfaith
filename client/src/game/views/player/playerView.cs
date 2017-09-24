@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 using BadFaith.Commands;
 using BadFaith.Geography.Fields;
-using BadFaith.UI;
-using BadFaith.UI.Terminals;
+using BadFaith.Ui;
+using BadFaith.Ui.Terminals;
 using BadFaith.Views.Player;
 
 namespace BadFaith.Views
@@ -25,7 +25,7 @@ namespace BadFaith.Views
 		public CommandList CommandList;
 		public Terminal Terminal;
 		public pass ActionList;
-		public UIElement[] UiAll;
+		public UiElement[] UiAll;
 		public ScrollBox UiWorldEvents;
 		public TextLine UiPlayerLocation;
 		public TextLine UiPlayerStatus;
@@ -58,7 +58,7 @@ namespace BadFaith.Views
 			ord('l'): LookAll
 			};
 			CommandList = game.CommandList;
-			//UI elements.
+			//Ui elements.
 			Terminal = game.Terminal;
 			ScrollBox UiWorldEvents = new ScrollBox(Terminal);
 			TextLine UiPlayerLocation = new TextLine(Terminal);
@@ -70,22 +70,22 @@ namespace BadFaith.Views
 			UiInterpreterResponse.SetColor(Terminal.Palette.WhiteOnBlack);
 			UiInterpreterInput.Label = ">";
 			UiInterpreterResponse.Label = "What next?";
-			UIElement[] UiAll = { UiWorldEvents, UiPlayerLocation, UiPlayerStatus, UiInterpreterResponse, UiInterpreterInput };
+			UiElement[] UiAll = { UiWorldEvents, UiPlayerLocation, UiPlayerStatus, UiInterpreterResponse, UiInterpreterInput };
 		}
 
-		public void UpdateUI()
+		public void UpdateUi()
 		{
 			UiInterpreterResponse.Label = "What next?";
 			UiPlayerLocation.Label = ActorLocation();
 			UiPlayerStatus.Label = ActorState();
 			foreach (Command fieldEvent in _getFieldChannel())
 			{ UiWorldEvents.AddLine(fieldEvent.Render(ControlledActorId)); }
-			foreach (UIElement uiElement in UiAll)
+			foreach (UiElement uiElement in UiAll)
 			{ uiElement.Render(); }
 		}
 
 		/**
-		UI layout callback.
+		Ui layout callback.
 		*/
 		public void Layout(_)
 		{
@@ -100,7 +100,7 @@ namespace BadFaith.Views
 			Vector2I screenExtents = Terminal.MainWindow.Extents;
 			UiWorldEvents.SetExtents((screenExtents.X - 4, screenExtents.Y));
 			UiPlayerLocation.FillRow();
-			UpdateUI();
+			UpdateUi();
 		}
 
 		public void Update(Game game)

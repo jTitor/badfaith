@@ -1,4 +1,4 @@
-namespace BadFaith.UI.Terminals.Constants
+namespace BadFaith.Ui.Terminals.Constants
 {
 	/**
 	Possible values for Window.snap.

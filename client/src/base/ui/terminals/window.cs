@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using BadFaith.UI.Terminals.Constants;
-using BadFaith.UI.Terminals.Palettes;
+using BadFaith.Ui.Terminals.Constants;
+using BadFaith.Ui.Terminals.Palettes;
 
-namespace BadFaith.UI.Terminals
+namespace BadFaith.Ui.Terminals
 {
 	/**
 	Abstracts windows.
