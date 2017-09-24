@@ -39,7 +39,7 @@ namespace BadFaith.Commands
 				//Pop a command
 				Command currCommand = commands.Dequeue();//self.commands.pop(0);
 				//and execute it.
-				if (currCommand.Execute())
+				if (currCommand.Execute(this))
 				{
 					//If it ran, dispatch it to interested parties.
 					//For now all events are public propagation,
