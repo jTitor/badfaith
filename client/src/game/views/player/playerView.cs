@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 
 using BadFaith.Commands;
+using BadFaith.Geography;
 using BadFaith.Geography.Fields;
-using BadFaith.Ui;
+using BadFaith.Ui.Elements;
 using BadFaith.Ui.Terminals;
 using BadFaith.Views.Player;
 
@@ -98,7 +99,7 @@ namespace BadFaith.Views
 			UiInterpreterResponse.FillRow();
 			UiPlayerStatus.FillRow();
 			Vector2I screenExtents = Terminal.MainWindow.Extents;
-			UiWorldEvents.SetExtents((screenExtents.X - 4, screenExtents.Y));
+			UiWorldEvents.SetExtents(new Vector2I(screenExtents.X - 4, screenExtents.Y));
 			UiPlayerLocation.FillRow();
 			UpdateUi();
 		}

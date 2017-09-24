@@ -41,8 +41,10 @@ namespace BadFaith.Views.Player
 		public void DescribeActor(int otherActorId)
 		{
 			if (otherActorId == ControlledActorId)
+			{
 				DescribeSelf();
-			return;
+				return;
+			}
 
 			Actor actor = Actor.All[otherActorId];
 			print(string.Format("You see a {0}.", actor.Name));

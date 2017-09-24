@@ -11,6 +11,10 @@
 // from .src.game import Game
 // from .src.terminal import Terminal
 using System.Collections.Generic;
+using BadFaith.Commands;
+using BadFaith.Ui.Terminals;
+using BadFaith.Views.Player;
+using BadFaith.World.WorldGen;
 
 namespace BadFaith
 {
@@ -39,9 +43,9 @@ namespace BadFaith
 		{
 			//TODO: These are Log entries!!!
 			print("Generating world...");
-			world = WorldGen.generateWorld();
+			world = WorldGenerator.GenerateWorld();
 			//Add one view for the player.
-			views.Add(PlayerView(this));
+			views.Add(new PlayerView(this));
 			Actor.RandomSpawnsForViews(views);
 			gameLoop();
 		}
@@ -92,7 +96,7 @@ namespace BadFaith
 				while (accumulator >= minUpdatableTimeSeconds)
 				{
 					update();
-					accumulator -= minUpdatableTimeSeconds
+					accumulator -= minUpdatableTimeSeconds;
 					wallTimeSeconds += minUpdatableTimeSeconds;
 				}
 

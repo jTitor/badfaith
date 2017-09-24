@@ -4,6 +4,8 @@ Functions for initializing game tables.
 // from .topology import Field, Zone, Sector
 // from .actor import Actor
 using System.Diagnostics;
+using BadFaith.Geography;
+using BadFaith.Geography.Fields;
 
 namespace BadFaith
 {

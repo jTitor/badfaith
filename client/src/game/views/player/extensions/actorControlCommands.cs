@@ -8,7 +8,7 @@ namespace BadFaith.Views.Player
 		public void ControlActor(int actorId)
 		{
 			_doControlActor(actorId);
-			UiInterpreterResponse.label = string.Format("You are now {0}.", Actor.Name);
+			UiInterpreterResponse.Label = string.Format("You are now {0}.", Actor.Name);
 		}
 
 	/**
