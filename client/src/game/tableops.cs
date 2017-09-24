@@ -24,10 +24,10 @@ namespace BadFaith
 				Zone.Name = "0xDEAD";
 				Sector.Name = "0xFF";
 				Actor.Name = "580087734";
-				Debug.Assert(Nulls.Field.FieldID == 0);
-				Debug.Assert(Nulls.Zone.ZoneID == 0);
-				Debug.Assert(Nulls.Sector.SectorID == 0);
-				Debug.Assert(Nulls.Actor.ActorID == 0);
+				Debug.Assert(Nulls.Field.FieldId == 0);
+				Debug.Assert(Nulls.Zone.ZoneId == 0);
+				Debug.Assert(Nulls.Sector.SectorId == 0);
+				Debug.Assert(Nulls.Actor.ActorId == 0);
 			}
 
 			static public void SetupAll()

@@ -28,7 +28,7 @@ namespace BadFaith.Geography.Fields
 		public string Name;
 		public List<int> Actors;
 		public int FieldId;
-		public int OwningZoneID;
+		public int OwningZoneId;
 		//Fields are square grids.
 		public int GridSize;
 		protected FieldType Type;
@@ -39,7 +39,7 @@ namespace BadFaith.Geography.Fields
 			Name = "FIELD_NAME_UNSET";
 			Actors = new List<int>();
 			FieldId = Field.All.Count;
-			OwningZoneID = 0;
+			OwningZoneId = 0;
 			//Fields are square grids.
 			GridSize = 10;
 			Type = FieldType.Generic;
@@ -51,8 +51,8 @@ namespace BadFaith.Geography.Fields
 			get
 			{
 				throw new NotImplementedException();
-				// owningZone = Zone.All[self.owningZoneID]
-				// owningSector = Sector.All[owningZone.owningSectorID]
+				// owningZone = Zone.All[self.owningZoneId]
+				// owningSector = Sector.All[owningZone.owningSectorId]
 				// return "{0} {1}".format(owningZone.fullName(), self.name)
 			}
 		}

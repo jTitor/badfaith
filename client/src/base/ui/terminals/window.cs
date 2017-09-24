@@ -9,7 +9,7 @@ namespace BadFaith.Ui.Terminals
 	*/
 	public class Window
 	{
-		private static int sLastID = -1;
+		private static int sLastId = -1;
 		//TODO: check types on this
 		private static Dictionary<int, int> sFlagMap = new Dictionary<int, int>();
 		/**
@@ -45,16 +45,16 @@ namespace BadFaith.Ui.Terminals
 		/**
 		Gets the next ID available for a window.
 		*/
-		private static int nextID()
+		private static int nextId()
 		{
-			Window.sLastID += 1;
-			return Window.sLastID;
+			Window.sLastId += 1;
+			return Window.sLastId;
 		}
 
 		public Window(CursesWindow window, bool isStatic = false)
 		{
 			cursesWindow = window;
-			id = Window.nextID();
+			id = Window.nextId();
 			//Set screen to no-delay
 			//so key events don't block game execution.
 			cursesWindow.nodelay(true);

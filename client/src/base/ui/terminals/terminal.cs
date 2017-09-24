@@ -128,14 +128,14 @@ Set this to ensure all windows are resized
 		The main window can't be removed this way,
 		however.
 		*/
-		public void removeWindow(int windowID)
+		public void removeWindow(int windowId)
 		{
-			if (windowID != mainWindow.Id)
+			if (windowId != mainWindow.Id)
 			{
 				Window windowToRemove = null;
 				foreach (Window w in windows)
 				{
-					if (w.Id == windowID)
+					if (w.Id == windowId)
 					{
 						windowToRemove = w;
 					}

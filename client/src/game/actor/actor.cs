@@ -50,14 +50,14 @@ namespace BadFaith
 			throw new System.NotImplementedException();
 
 			// #You can only go to another field in the same zone.
-			// if Field.All[fieldID].owningZoneID != Field.All[self.fieldID].owningZoneID or fieldID == self.fieldID:
+			// if Field.All[fieldId].owningZoneId != Field.All[self.fieldId].owningZoneId or fieldId == self.fieldId:
 			// 	return False
 			// 	#warning ("Trying to go to an invalid field!")
 			// #Otherwise, set the field.
-			// oldField = Field.All[self.fieldID]
-			// newField = Field.All[newFieldID]
+			// oldField = Field.All[self.fieldId]
+			// newField = Field.All[newFieldId]
 			// oldField.actors.remove()
-			// self.fieldID = newFieldID
+			// self.fieldId = newFieldId
 			// newField.actors.append()
 			// return True
 		}
@@ -71,10 +71,10 @@ namespace BadFaith
 			//TODO: result should really include an ActorId?
 			throw new System.NotImplementedException();
 
-			// field = Field.All[self.fieldID]
+			// field = Field.All[self.fieldId]
 			// if field.type != Field.Types.Gate:
 			// 	return False
-			// self._doFieldChange(field.destinationFieldID)
+			// self._doFieldChange(field.destinationFieldId)
 			// return True
 		}
 
@@ -89,7 +89,7 @@ namespace BadFaith
 		{
 			throw new System.NotImplementedException();
 			// assert isinstance(direction, Direction)
-			// field = Field.All[self.fieldID]
+			// field = Field.All[self.fieldId]
 			// assert isinstance(field, Field)
 			// vertical = 1 if direction.value % 2 == 0 else 0
 			// horizontal = 1 if not vertical else 0
@@ -112,9 +112,9 @@ namespace BadFaith
 			throw new System.NotImplementedException();
 
 			// actor = Actor()
-			// actor.fieldID = random.randint(1, len(Field.All)-1)
-			// actor.name = "Nemo {0}".format(actor.fieldID)
-			// return actor.actorID
+			// actor.fieldId = random.randint(1, len(Field.All)-1)
+			// actor.name = "Nemo {0}".format(actor.fieldId)
+			// return actor.actorId
 		}
 
 		/**
@@ -124,8 +124,8 @@ namespace BadFaith
 		public static void RandomSpawnForView(int viewId)
 		{
 			throw new System.NotImplementedException();
-			// actorID = cls._doRandomSpawn()
-			// view.controlActor(actorID)
+			// actorId = cls._doRandomSpawn()
+			// view.controlActor(actorId)
 		}
 
 		/**
@@ -142,7 +142,7 @@ namespace BadFaith
 			// #they won't get updated,
 			// #and we can scan the table for inactive actors if we
 			// #need to add more.
-			// Actor.All[actorID].fieldID = 0
+			// Actor.All[actorId].fieldId = 0
 		}
 
 		/**
@@ -152,9 +152,9 @@ namespace BadFaith
 		{
 			throw new System.NotImplementedException();
 
-			// oldActorID = view.controlledActorID
+			// oldActorId = view.controlledActorId
 			// cls.randomSpawnForView(view)
-			// cls.destroyActor(oldActorID)
+			// cls.destroyActor(oldActorId)
 		}
 	}
 }

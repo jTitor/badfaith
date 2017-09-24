@@ -23,7 +23,7 @@ public class Gate: Field
 	public Gate()
 	{
 		// super(Gate, self).__init__()
-		// self.destinationFieldID = 0
+		// self.destinationFieldId = 0
 		// Gate.All.append(self)
 		// self.type = Field.Types.Gate
 		throw new NotImplementedException();
@@ -36,10 +36,10 @@ public class Gate: Field
 		// assert isinstance(destinationGate, Gate)
 		// #If we were already connected to another gate,
 		// #disconnect it from us first.
-		// if self.destinationFieldID != 0:
-		// 	Field.All[self.destinationFieldID].destinationFieldID = 0
-		// self.destinationFieldID = destinationGate.fieldID
-		// destinationGate.destinationFieldID = self.fieldID
+		// if self.destinationFieldId != 0:
+		// 	Field.All[self.destinationFieldId].destinationFieldId = 0
+		// self.destinationFieldId = destinationGate.fieldId
+		// destinationGate.destinationFieldId = self.fieldId
 		throw new NotImplementedException();
 	}
 

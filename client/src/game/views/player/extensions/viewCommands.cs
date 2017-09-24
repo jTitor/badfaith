@@ -11,11 +11,11 @@ namespace BadFaith.Views.Player
 		public string DescribeField()
 		{
 			string fieldDescription = string.Format("You are in {0}.", Field.FullName);
-			if (Field.FieldID == 0)
+			if (Field.FieldId == 0)
 			{ fieldDescription += "\nYou get the feeling you shouldn't be here..."; }
 			if (Field.Type == Field.Types.Gate)
 			{
-				Field otherField = Field.All[Field.DestinationFieldID];
+				Field otherField = Field.All[Field.DestinationFieldId];
 				fieldDescription += string.Format("\nThis is a gate field! It's pointing to {0}.", otherField.FullName);
 			}
 			return fieldDescription;
@@ -38,13 +38,13 @@ namespace BadFaith.Views.Player
 		public string ActorLocation()
 		{ return string.Format("{0}: {1}", Actor.Name, Field.fullName); }
 
-		public void DescribeActor(int otherActorID)
+		public void DescribeActor(int otherActorId)
 		{
-			if (otherActorID == ControlledActorID)
+			if (otherActorId == ControlledActorId)
 				DescribeSelf();
 			return;
 
-			Actor actor = Actor.All[otherActorID];
+			Actor actor = Actor.All[otherActorId];
 			print(string.Format("You see a {0}.", actor.Name));
 		}
 	}

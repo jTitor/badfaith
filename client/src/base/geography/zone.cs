@@ -2,6 +2,7 @@
  */
 using System;
 using System.Collections.Generic;
+using BadFaith.Geography.Fields;
 
 namespace BadFaith.Geography
 {
@@ -15,36 +16,42 @@ namespace BadFaith.Geography
 		All[0] is a null element that isn't connected to anything and can't be entered.
 		*/
 		//TODO
-		private List<Zone> _all = new List<Zone>();
-		public List<Zone> All { get { return _all; } }
-		public void InitZones()
+		private static List<Zone> _all = new List<Zone>();
+		public static List<Zone> All { get { return _all; } }
+		public static void InitZones()
 		{
 			throw new NotImplementedException("Implement null element initialization");
 		}
 
 		/**
 		One-way connections between zones.
-		The index is the origin zone's ID, and the result is a list of zone IDs
+		The index is the origin zone's ID, and the result is a list of zone Ids
 		that the zone is connected to, indexed by north/south/east/west;
 		You should use Zone.addLink to create links, but
 		there's no reason you couldn't hand-generate links either.
 		*/
 		//TODO
-		//#_LinkLookup = 
+		private static List<List<Zone>> sLinkLookup = new List<List<Zone>>();
+
+		public string Name;
+		public List<Field> Fields = new List<Field>();
+		public int ZoneId;
+		public int OwningSectorId = 0;
+		//The N/S/E/W gates.
+		public Gate[] Gates;
 
 		public Zone()
 		{
-			throw new NotImplementedException();
-			// self.name = "ZONE_NAME_UNSET"
-			// #The fields contained by this zone.
-			// self.fields = []
-			// self.zoneID = len(Zone.All)
-			// Zone.All.append(self)
-			// self.owningSectorID = 0
-			// #The N/S/E/W gates.
-			// self.gates = (Gate(), Gate(), Gate(), Gate())
-			// for gate in self.gates:
-			// 	self.addField(gate)
+			Name = "ZONE_NAME_UNSET";
+			//The fields contained by this zone.
+			ZoneId = Zone.All.Count;
+			Zone.All.Add(this);
+			//The N/S/E/W gates.
+			Gates = new Gate[] { new Gate(), new Gate(), new Gate(), new Gate() };
+			foreach (Gate gate in Gates)
+			{
+				AddField(gate);
+			}
 		}
 
 		/**
@@ -54,10 +61,10 @@ namespace BadFaith.Geography
 		{
 			throw new NotImplementedException();
 			// assert isinstance(field, Field)
-			// field.owningZoneID = self.zoneID
-			// #Fix up any reverse-lookup tables.
-			// self.fields.append(field)
-			// #raise NotImplementedError
+			field.OwningZoneId = ZoneId;
+			//Fix up any reverse-lookup tables.
+			Fields.Add(field);
+			//throw new NotImplementedException()
 		}
 
 		/**
@@ -67,7 +74,7 @@ namespace BadFaith.Geography
 		{
 			throw new NotImplementedException();
 
-			// raise NotImplementedError
+			// throw new NotImplementedException()
 		}
 
 		/**
@@ -80,25 +87,20 @@ namespace BadFaith.Geography
 		*/
 		public void LinkTo(Zone destinationZone, Direction direction)
 		{
+			// //Connect the gates so the zones can reach each other.
+			Gate sourceGate = Gates[direction.Value];
+			Gate destinationGate = destinationZone.Gates[direction.Opposite().Value];
+			sourceGate.LinkTo(destinationGate);
+
+			// //Fix up any neighbor tables.
 			throw new NotImplementedException();
-			// assert isinstance(destinationZone, Zone)
-			// assert isinstance(direction, Direction)
-
-			// #Connect the gates so the zones can reach each other.
-			// sourceGate = self.gates[direction.value]
-			// destinationGate = destinationZone.gates[Directions.opposite(direction).value]
-			// sourceGate.linkTo(destinationGate)
-
-			// #Fix up any neighbor tables.
-			// #raise NotImplementedError
 		}
 
 		public string FullName
 		{
 			get
 			{
-				throw new NotImplementedException();
-				// return "{0} {1}".format(Sector.All[self.owningSectorID].fullName(), self.name)
+				return string.Format("{0} {1}", Sector.All[OwningSectorId].FullName(), Name);
 			}
 		}
 	}

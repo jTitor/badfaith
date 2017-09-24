@@ -5,9 +5,9 @@ namespace BadFaith.Views.Player
 		/**
 		Immediately takes control of an actor.
 		*/
-		public void ControlActor(int actorID)
+		public void ControlActor(int actorId)
 		{
-			_doControlActor(actorID);
+			_doControlActor(actorId);
 			UiInterpreterResponse.label = string.Format("You are now {0}.", Actor.Name);
 		}
 

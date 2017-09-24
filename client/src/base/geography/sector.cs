@@ -45,7 +45,7 @@ namespace BadFaith.Geography
 			zone.OwningSectorId = sectorId;
 			//Fix up any reverse-lookup tables.
 			zones.Add(zone);
-			//raise NotImplementedError
+			//throw new NotImplementedException()
 		}
 		/**
 		Makes the given zone a member of this sector.
@@ -78,9 +78,9 @@ namespace BadFaith.Geography
 			Zone destinationGateZone = other.gateZones[direction.Opposite().Value];
 			Gate sourceGate = sourceGateZone.Gates[direction.Value];
 			Gate destinationGate = destinationGateZone.Gates[direction.Opposite().Value];
-			if (sourceGate.DestinationFieldID != 0)
+			if (sourceGate.DestinationFieldId != 0)
 			{ throw new WorldGenError("Source gate already connected to another sector!"); }
-			if (destinationGate.DestinationFieldID != 0)
+			if (destinationGate.DestinationFieldId != 0)
 			{ throw new WorldGenError("Destination gate already connected to another sector!"); }
 			sourceGate.LinkTo(destinationGate);
 		}
