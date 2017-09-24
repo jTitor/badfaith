@@ -1,40 +1,61 @@
+/**
+	baseElement.cs
+	Specifies UI elements.
+*/
+using BadFaith.UI.Terminals;
+
 namespace BadFaith.UI
 {
-	'''Specifies UI elements.
-'''
-from .terminal import Terminal, Window
-	class UIElement(Window):
-		'''Base class for UI elements.
-		'''
-		def __init__(self, terminal):
-			#Make the window.
-			implementationWindow = terminal._implementationSubWindow()
-			#Attach ourselves to the terminal's window list.
-			terminal.windows.append(self)
-			#Initialize the super data now...
-			super(UI.UIElement, self).__init__(implementationWindow)
-			self.mainWindow = terminal.mainWindow
+	/**
+	Base class for UI elements.
+	*/
+	public class UIElement : Window
+	{
+		public Window MainWindow;
+		public UIElement(Terminal terminal)
+		{
+			//Make the window.
+			implementationWindow = terminal._implementationSubWindow();
+			base(implementationWindow);
+			//Attach ourselves to the terminal's window list.
+			terminal.Windows.Add(this);
+			//Initialize the super data now...
+			MainWindow = terminal.MainWindow;
+		}
 
-		def setRow(self, row):
-			'''Convenience function for adjusting the row position
-			only.
-			'''
-			self.setOrigin((row, self.origin[1]))
+		/**
+		Convenience function for adjusting the row position
+		only.
+		*/
+		public void SetRow(int row)
+		{
+			SetOrigin(new Vector2I(row, Origin.Y));
+		}
 
-		def fillRow(self):
-			'''Convenience function to fill entire row.
-			'''
-			self.setExtents((self.extents[0], self.mainWindow.extents[1]))
+		/**
+		Convenience function to fill entire row.
+		*/
+		public void FillRow()
+		{
+			SetExtents(new Vector2I(Extents.X, MainWindow.Extents.Y));
+		}
 
-		def toBottom(self, displacement=0):
-			'''Convenience function to snap to bottom minus
-			'displacement'.
-			'''
-			self.setOrigin((self.mainWindow.extents[0]-(1+displacement), self.origin[1]))
+		/**
+		Convenience function to snap to bottom minus
+		'displacement'.
+		*/
+		public void ToBottom(int displacement = 0)
+		{
+			SetOrigin(new Vector2I(MainWindow.Extents.X - (1 + displacement), Origin.Y));
+		}
 
-		def toTop(self, displacement=0):
-			'''Convenience function to snap to top plus
-			'displacement'.
-			'''
-			self.setOrigin((displacement, self.origin[1]))
+		/**
+		Convenience function to snap to top plus
+		'displacement'.
+		*/
+		public void ToTop(int displacement = 0)
+		{
+			SetOrigin(new Vector2I(displacement, Origin.Y));
+		}
+	}
 }
