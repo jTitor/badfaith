@@ -1,18 +1,31 @@
+using BadFaith.UI.Terminals;
+
 namespace BadFaith.UI
 {
-	class TextLine(UIElement):UIElement
-		'''Displays a single string inside itself.
-		This tries to have the same width as the screen.
-		'''
-		def __init__(self, terminal, label=""):
-			super(UI.TextLine, self).__init__(terminal)
-			#Now init our data.
-			'''The text to display.
-			'''
-			self.label = label
+	/**
+	Displays a single string inside itself.
+	This tries to have the same width as the screen.
+	*/
+	class TextLine : UIElement
+	{
+		/**
+		The text to display.
+		*/
+		public string Label;
 
-		def render(self):
-			'''Renders this TextLine.
-			'''
-			self.printString(self.label)
+		public TextLine(self, Terminal terminal, string label = "")
+		{
+			super(UI.TextLine, self).__init__(terminal);
+			//Now init our data.
+			Label = label;
+		}
+
+		/**
+		Renders this TextLine.
+		*/
+		public override void Render()
+		{
+			PrintString(Label);
+		}
+	}
 }
