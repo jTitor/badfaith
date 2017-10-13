@@ -10,6 +10,7 @@
 // 	sys.exit(1)
 // from .src.game import Game
 // from .src.terminal import Terminal
+using System.Threading;
 using System.Collections.Generic;
 using BadFaith.Commands;
 using BadFaith.Ui.Terminals;
@@ -102,6 +103,8 @@ namespace BadFaith
 
 				//	Display state to player and AI.
 				render();
+				//Don't consume all time so the UI has time to update.
+				Thread.Sleep(1);
 			}
 		}
 

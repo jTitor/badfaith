@@ -1,6 +1,7 @@
 /**
 Contains terminal-specific operations.
 */
+using System;
 using System.Collections.Generic;
 using BadFaith.Ui;
 using BadFaith.Ui.Terminals.Palettes;
@@ -15,10 +16,55 @@ namespace BadFaith.Ui.Terminals
 		private List<Window> windows;
 		private DefaultPalette palette;
 		public DefaultPalette Palette {get{return palette;} set{palette = value;}}
+		/**
+		Set this to true ensure all windows are resized
+		and refreshed.
+		*/
 		public bool NeedsLayout { get; set; }
 
+		#region Constants
+		private readonly String kDefaultTitle = "Game Title";
+		#endregion
 		/**
-Manages the terminal display and input.
+		Initializes the console this terminal is connected to.
+		*/
+		private void initConsole()
+		{
+			Console.Title = "WolfCurses Console Application";
+			Console.WriteLine("Starting...");
+			Console.CursorVisible = false;
+			//Have the console respond to Ctrl+C.
+			Console.CancelKeyPress += Console_CancelKeyPress;
+		}
+
+		private void handleInput()
+		{
+			// Check if a key is being pressed, without blocking thread.
+			if (Console.KeyAvailable)
+			{
+				// Get the key that was pressed, without printing it to console.
+				var key = Console.ReadKey(true);
+
+				// If enter is pressed, pass whatever we have to simulation.
+				// ReSharper disable once SwitchStatementMissingSomeCases
+				switch (key.Key)
+				{
+					case ConsoleKey.Enter:
+						ConsoleSimulationApp.Instance.InputManager.SendInputBufferAsCommand();
+						break;
+					case ConsoleKey.Backspace:
+						ConsoleSimulationApp.Instance.InputManager.RemoveLastCharOfInputBuffer();
+						break;
+					default:
+						ConsoleSimulationApp.Instance.InputManager.AddCharToInputBuffer(key.KeyChar);
+						break;
+				}
+			}
+		}
+
+		#region Public Methods
+		/**
+		Manages the terminal display and input.
 		*/
 		public Terminal(CursesWindowHandle window)
 		{
@@ -28,10 +74,6 @@ Manages the terminal display and input.
 			//We also don't really need to highlight the cursor.
 			curses.curs_set(0);
 			windows = new List<Window>() { mainWindow };
-			/**
-Set this to ensure all windows are resized
-			and refreshed.
-			*/
 			NeedsLayout = true;
 			//Initialize palettes.
 			palette = new DefaultPalette();
@@ -50,7 +92,8 @@ Set this to ensure all windows are resized
 		if you don't provide one, a no-op dummy is used instead.
 		*/
 		public void Refresh(layoutFunction= _noLayout)
-		{//Check for size changes.
+		{
+			//Check for size changes.
 			bool screenResized = mainWindow.RefreshExtents();
 			//Don't actually lazy redraw
 			//right now since you have to redraw
@@ -128,7 +171,7 @@ Set this to ensure all windows are resized
 		The main window can't be removed this way,
 		however.
 		*/
-		public void removeWindow(int windowId)
+		public void RemoveWindow(int windowId)
 		{
 			if (windowId != mainWindow.Id)
 			{
@@ -147,4 +190,5 @@ Set this to ensure all windows are resized
 			}
 		}
 	}
+	#endregion
 }
